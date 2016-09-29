@@ -1,0 +1,22 @@
+<header>
+  <a [routerLink]=" ['./'] ">
+    Index
+  </a>
+  <a [routerLink]=" ['./home'] ">
+    Home
+  </a>
+  <a [routerLink]=" ['./detail'] ">
+    Detail
+  </a>
+  <a [routerLink]=" ['./about'] ">
+    About
+  </a>
+</header>
+
+<main>
+  <router-outlet></router-outlet>
+</main>
+
+<footer>
+  <span>WebPack Angular 2 Starter by <a [href]="url">www.notia.com</a></span>
+</footer>
