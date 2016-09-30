@@ -11,11 +11,11 @@ exports.emptyImage = function(req, res) {
 };
 
 exports.test = function (req, res) {
-    res.send('');
+    res.send('TEST');
 };
 
 exports.logout = function (req, res) {
-  let sql, vals = {}, sqlResult, sessionid, valsSessionid, loginName;
+  var sql, vals = {}, sqlResult, sessionid, valsSessionid, loginName;
 
   try {
     loginName = Tools.getCookieId(req, Constants.AUTH_TOKEN_CODE);
@@ -55,9 +55,9 @@ exports.logout = function (req, res) {
       }
     ).then(
       function (result) {
-        let data = Tools.getSingleResult(result);
+        var data = Tools.getSingleResult(result);
         try {
-          let dataParse = (data && data.result ? JSON.parse(data.result) : {state: -1});
+          var dataParse = (data && data.result ? JSON.parse(data.result) : {state: -1});
           if (dataParse.state == '1') {
             Tools.deleteCookie(res, 'auth_token');
           }
@@ -80,7 +80,7 @@ exports.logout = function (req, res) {
 }
 
 exports.login = function (req, res) {
-  let sql, vals = {}, valsUser, sqlResult, sessionid, valsSessionid, sqlUser, sqlUserResult;
+  var sql, vals = {}, valsUser, sqlResult, sessionid, valsSessionid, sqlUser, sqlUserResult;
 
   try {
     sessionid = Tools.getSessionId(req);
@@ -138,15 +138,15 @@ exports.login = function (req, res) {
 
     valsSessionid = {sessionid: sessionid};
 
-    let obj = {isLogged: false};
+    var obj = {isLogged: false};
     Oracledb.executeSQL(sql, vals, req, null, {commit: true}).then(
       function (result) {
         return Oracledb.select(sqlResult, valsSessionid, req, null, null);
       }
     ).then(
       function (result) {
-        let data = Tools.getSingleResult(result);
-        let dataParse = data.result ? JSON.parse(data.result) : {};
+        var data = Tools.getSingleResult(result);
+        var dataParse = data.result ? JSON.parse(data.result) : {};
         if (dataParse.overeno == '1') {
           obj.isLogged = true;
           Tools.createAuthCookie(res, dataParse.authToken);
@@ -171,9 +171,9 @@ exports.login = function (req, res) {
       }
     ).then(
       function (result) {
-        let data = Tools.getSingleResult(result);
-        let dataParse = data.result ? JSON.parse(data.result) : {};
-        let user = {};
+        var data = Tools.getSingleResult(result);
+        var dataParse = data.result ? JSON.parse(data.result) : {};
+        var user = {};
         /*for (var key in obj) {
          // skip loop if the property is from prototype
          if (!obj.hasOwnProperty(key)) continue;
@@ -237,7 +237,7 @@ exports.login = function (req, res) {
 };
 
 exports.sessionidCookie = function(req, res, next) {
-  let sql, vals = {};
+  var sql, vals = {};
   try {
     if (!Tools.getSessionId(req)) {
       sql =
@@ -247,8 +247,8 @@ exports.sessionidCookie = function(req, res, next) {
         '  dual';
       Oracledb.select(sql, vals, req, null, null).then(
         function (result) {
-          let data = Tools.getSingleResult(result);
-          let sessionid = data.sessionid;
+          var data = Tools.getSingleResult(result);
+          var sessionid = data.sessionid;
           Tools.createCookie(res, Constants.SESSIONID_CODE, sessionid);
           next();
         },
@@ -269,7 +269,7 @@ exports.sessionidCookie = function(req, res, next) {
 
 exports.createPartnerCookie = function(req, res, obj) {
   return new Promise(function (resolve, reject) {
-    let sql, sqlDelete, sqlInsert, vals = {};
+    var sql, sqlDelete, sqlInsert, vals = {};
     sql =
       'SELECT ' +
       '  encrypt_cookie(' +
@@ -304,7 +304,7 @@ exports.createPartnerCookie = function(req, res, obj) {
 
     Oracledb.select(sql, {}, req, null, null).then(
       function (result) {
-        let data = Tools.getSingleResult(result);
+        var data = Tools.getSingleResult(result);
         vals.authToken = data.encryptCookie;
         return Oracledb.select(sqlDelete, vals, req, null, null);
       }

@@ -23,20 +23,8 @@ app.use('/', express.static(__dirname + '../dist'));
 app.use('/assets', express.static(path.join(__dirname, '../dist/assets'), {maxAge: 30}));
 app.use(express.static(path.join(__dirname, '../dist'), {index: false}));
 
-// APIs
-app.get('/test', api.test);
-
-// all other routes are handled by Angular
-app.get('/', function(req, res) {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
-
-app.get('*', function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
-  var pojo = { status: 404, message: 'No Content' };
-  var json = JSON.stringify(pojo, null, 2);
-  res.status(404).send(json);
-});
+// Route
+require('./backend/routes')(app);
 
 app.listen(app.get('port'), function() {
   console.log('Angular 2 Full Stack listening on port '+app.get('port'));

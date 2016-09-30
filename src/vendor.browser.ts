@@ -15,7 +15,7 @@ import '@angular/http';
 import '@angular/router';
 
 // AngularClass
-import '@angularclass/hmr';
+//import '@angularclass/hmr';
 
 // RxJS
 import 'rxjs/add/operator/map';
